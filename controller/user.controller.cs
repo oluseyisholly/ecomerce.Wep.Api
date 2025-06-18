@@ -1,23 +1,32 @@
 using EcommerceWebApi.Dto;
+using EcommerceWebApi.IService;
+using EcommerceWebApi.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceWebApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class UserController : ControllerBase
+    public class UserController(IUserService userService) : ControllerBase
     {
+        private readonly IUserService _userService = userService;
+
         // GET: api/sample
         [HttpGet]
         public IActionResult GetAll()
         {
-            var data = new[]
-            {
-                new { Id = 1, Name = "Item One" },
-                new { Id = 2, Name = "Item Two" },
-                new { Id = 3, Name = "Item Three" },
-            };
+            var data = _userService.GetAllUsers();
+            return Ok(data);
+        }
 
+        // GET: api/sample
+        // [AllowAnonymous]
+        [HttpPost("login")]
+        public IActionResult LogIn()
+        {
+            var data = _userService.GetAllUsers();
             return Ok(data);
         }
 
