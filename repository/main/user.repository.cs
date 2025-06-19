@@ -9,13 +9,14 @@ namespace EcommerceWebApi.Repository
     {
         private readonly AppDbContext _context = context;
 
-        public async void CreateUser(User user)
+        public async Task<User> CreateUser(User user)
         {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
+            return user;
         }
 
-        public async Task<IList<User>> GetAllUsers()
+        public async Task<List<User>> GetAllUsers()
         {
             return await _context.Users.ToListAsync();
         }

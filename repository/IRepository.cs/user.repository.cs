@@ -5,8 +5,8 @@ namespace EcommerceWebApi.IRepository
 {
     public interface IUserRepository
     {
-        Task<IList<User>> GetAllUsers();
+        Task<List<User>> GetAllUsers();
         Task<User> GetUserById();
-        void CreateUser(User user);
+        Task<User> CreateUser(User user);
     }
 }

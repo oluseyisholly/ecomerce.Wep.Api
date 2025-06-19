@@ -8,8 +8,11 @@ namespace EcommerceWebApi.AutoMapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<User, CreateUserDto>(); // Entity to DTO
-            CreateMap<CreateUserDto, User>(); // DTO to Entity
+            CreateMap<CreateUserDto, User>()
+                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+                .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
         }
     }
 }

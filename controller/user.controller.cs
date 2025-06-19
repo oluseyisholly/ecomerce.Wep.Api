@@ -15,14 +15,15 @@ namespace EcommerceWebApi.Controllers
 
         // GET: api/sample
         [HttpGet]
-        public IActionResult GetAll()
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAll()
         {
-            var data = _userService.GetAllUsers();
-            return Ok(data);
+            var users = await _userService.GetAllUsers();
+            return Ok(users);
         }
 
         // GET: api/sample
-        // [AllowAnonymous]
+        [AllowAnonymous]
         [HttpPost("login")]
         public IActionResult LogIn()
         {
@@ -35,16 +36,16 @@ namespace EcommerceWebApi.Controllers
         public IActionResult GetById(int id)
         {
             var item = new { Id = id, Name = $"Item {id}" };
-
             return Ok(item);
         }
 
         // POST: api/sample
         [HttpPost]
-        public IActionResult CreateUser([FromBody] CreateUserDto createUserDto)
+        [AllowAnonymous]
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserDto createUserDto)
         {
-            throw new Exception();
-            return Ok(createUserDto);
+            var data = await _userService.CreateUser(createUserDto);
+            return Ok(data);
         }
     }
 

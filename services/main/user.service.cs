@@ -14,10 +14,11 @@ namespace EcommerceWebApi.Service
         private readonly IPasswordHasher<User> _passwordHasher = new PasswordHasher<User>();
         private readonly IMapper _mapper = mapper;
 
-        public CreateUserDto CreateUser(CreateUserDto createUserDto)
+        public async Task<CreateUserDto> CreateUser(CreateUserDto createUserDto)
         {
+            var data = createUserDto;
             var user = _mapper.Map<User>(createUserDto);
-            _userRepository.CreateUser(user);
+            await _userRepository.CreateUser(user);
             return createUserDto;
         }
 
@@ -26,9 +27,10 @@ namespace EcommerceWebApi.Service
             var user = _mapper.Map<User>(createUserDto);
         }
 
-        public async Task<IEnumerable<User>> GetAllUsers()
+        public async Task<List<User>> GetAllUsers()
         {
-            return await _userRepository.GetAllUsers();
+            var users = await _userRepository.GetAllUsers();
+            return _mapper.Map<List<User>>(users);
         }
 
         public User GetUsersById()

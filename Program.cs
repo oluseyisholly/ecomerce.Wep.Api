@@ -26,7 +26,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddJwtAuthentication(builder.Configuration, jwtSettings);
 
 // builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddAutoMapper(typeof(Profile));
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 builder.Services.AddOpenApi();
 
