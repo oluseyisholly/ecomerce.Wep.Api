@@ -20,5 +20,9 @@ namespace EcommerceWebApi.Models
 
         [MaxLength(255)]
         public string? PasswordHash { get; set; } = null!;
+
+        public ICollection<Order> Orders { get; set; } = null!;
+        public ICollection<Cart> Carts { get; set; } = null!;
+        public ICollection<ShippingAddress> ShippingAddresses { get; set; } = null!;
     }
 }

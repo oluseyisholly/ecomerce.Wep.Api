@@ -1,4 +1,5 @@
 using System.Collections;
+using EcommerceWebApi.Common.Model;
 using EcommerceWebApi.Dto;
 using EcommerceWebApi.Models;
 
@@ -6,8 +7,10 @@ namespace EcommerceWebApi.IService
 {
     public interface IUserService
     {
-        Task<List<User>> GetAllUsers();
+        Task<StandardResponse<List<User>>> GetAllUsers();
         User GetUsersById();
-        Task<CreateUserDto> CreateUser(CreateUserDto createUserDto);
+        Task<StandardResponse<CreateUserDto>> CreateUser(CreateUserDto createUserDto);
+
+        Task<StandardResponse<PaginatedResponse<User>>> GetPaginatedAllUsers(PaginationQuery query);
     }
 }

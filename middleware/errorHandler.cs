@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json;
+using EcommerceWebApi.Exceptions;
 
 namespace EcommerceWebApi.Middleware
 {
@@ -18,6 +19,18 @@ namespace EcommerceWebApi.Middleware
             {
                 await _next(context); // Proceed to the next middleware
             }
+            catch (NotFoundException ex)
+            {
+                await HandleNotFoundExceptionAsync(context, ex);
+            }
+            catch (UnprocessibleEntityException ex)
+            {
+                await HandleUnprocessibleEntityExceptionAsync(context, ex);
+            }
+            catch (ConflictException ex)
+            {
+                await HandleConflictExceptionAsync(context, ex);
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An unhandled exception occurred.");
@@ -35,6 +48,38 @@ namespace EcommerceWebApi.Middleware
                 Message = "An unexpected error occurred.",
                 Detail = exception.Message, // For dev only; remove in production
             };
+
+            context.Response.ContentType = contentType;
+            context.Response.StatusCode = statusCode;
+
+            return context.Response.WriteAsync(JsonSerializer.Serialize(response));
+        }
+
+        private static Task HandleNotFoundExceptionAsync(HttpContext context, Exception exception)
+        {
+            return ExceptionAbstract(context, (int)HttpStatusCode.NotFound, exception);
+        }
+
+        private static Task HandleUnprocessibleEntityExceptionAsync(
+            HttpContext context,
+            Exception exception
+        )
+        {
+            return ExceptionAbstract(context, (int)HttpStatusCode.UnprocessableContent, exception);
+        }
+
+        private static Task HandleConflictExceptionAsync(HttpContext context, Exception exception)
+        {
+            return ExceptionAbstract(context, (int)HttpStatusCode.UnprocessableContent, exception);
+        }
+
+        private static Task ExceptionAbstract(
+            HttpContext context,
+            int statusCode,
+            Exception exception
+        )
+        {
+            var response = new { StatusCode = statusCode, Message = exception.Message };
 
             context.Response.ContentType = contentType;
             context.Response.StatusCode = statusCode;

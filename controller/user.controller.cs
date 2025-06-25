@@ -1,3 +1,4 @@
+using EcommerceWebApi.Common.Model;
 using EcommerceWebApi.Dto;
 using EcommerceWebApi.IService;
 using EcommerceWebApi.Service;
@@ -8,13 +9,22 @@ namespace EcommerceWebApi.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class UserController(IUserService userService) : ControllerBase
     {
         private readonly IUserService _userService = userService;
 
         // GET: api/sample
-        [HttpGet]
+        [HttpGet("all")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetPaginatedAllUsers([FromQuery] PaginationQuery query)
+        {
+            var users = await _userService.GetPaginatedAllUsers(query);
+            return Ok(users);
+        }
+
+        // GET: api/sample
+        [HttpGet("paginated")]
         [AllowAnonymous]
         public async Task<IActionResult> GetAll()
         {
@@ -33,6 +43,7 @@ namespace EcommerceWebApi.Controllers
 
         // GET: api/sample/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public IActionResult GetById(int id)
         {
             var item = new { Id = id, Name = $"Item {id}" };
