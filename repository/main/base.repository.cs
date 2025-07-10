@@ -39,23 +39,30 @@ namespace EcommerceWebApi.Repository
 
         public async Task<PaginatedResponse<T>> GetPaginatedAll(
             PaginationQuery paginationQuery,
+            Expression<Func<T, bool>>? filter = null,
             params Expression<Func<T, object>>[] includes
         )
         {
             var baseQuery = _base.AsQueryable();
 
-            IQueryable<T> query = baseQuery
-                .Skip((paginationQuery.PageNumber - 1) * paginationQuery.PageSize)
-                .Take(paginationQuery.PageSize);
+            // Apply filter if provided
+            if (filter != null)
+            {
+                baseQuery = baseQuery.Where(filter);
+            }
 
             foreach (var include in includes)
             {
-                query = baseQuery.Include(include);
+                baseQuery = baseQuery.Include(include);
             }
 
             var totalRecords = await baseQuery.CountAsync();
 
-            var data = await query.ToListAsync();
+            // Apply pagination
+            var data = await baseQuery
+                .Skip((paginationQuery.PageNumber - 1) * paginationQuery.PageSize)
+                .Take(paginationQuery.PageSize)
+                .ToListAsync();
 
             return new PaginatedResponse<T>(
                 data,
@@ -70,6 +77,21 @@ namespace EcommerceWebApi.Repository
             _base.Remove(Base);
             await _context.SaveChangesAsync();
             return Base;
+        }
+
+        public async Task<T> SoftDelete(T Base)
+        {
+            if (Base is ISoftDeletable deletable)
+            {
+                deletable.IsDeleted = true;
+                _context.Update(deletable);
+                await _context.SaveChangesAsync();
+                return Base;
+            }
+
+            throw new InvalidOperationException(
+                $"{typeof(T).Name} does not support soft deletion."
+            );
         }
 
         public async Task<T?> GetById(int id)

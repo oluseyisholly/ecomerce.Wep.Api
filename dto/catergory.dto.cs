@@ -13,4 +13,9 @@ namespace EcommerceWebApi.Dto
     {
         public string Name { get; set; } = null!;
     }
+
+    public class CategoryDto : BaseDto
+    {
+        public string Name { get; set; } = null!;
+    }
 }

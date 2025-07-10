@@ -93,7 +93,7 @@ namespace EcommerceWebApi.Service
             PaginationQuery query
         )
         {
-            var users = await _userRepository.GetPaginatedAll(query);
+            var users = await _userRepository.GetPaginatedAll(query, null);
 
             var mappedItems = _mapper.Map<List<UserDto>>(users.Data);
 

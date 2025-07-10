@@ -16,7 +16,7 @@ namespace EcommerceWebApi.IService
             UpdateProductDto createProductDto
         );
         Task<StandardResponse<PaginatedResponse<ProductDto>>> GetPaginatedAllProducts(
-            PaginationQuery query
+            ProductsQuery query
         );
     }
 }

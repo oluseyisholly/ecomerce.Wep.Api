@@ -7,15 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceWebApi.Controllers
 {
-    [Authorize(Roles = nameof(RoleEnum.Admin))]
+    // [Authorize(Roles = nameof(RoleEnum.Admin))]
     [ApiController]
     [Route("[controller]")]
+    [AllowAnonymous]
     public class ProductController(IProductService ProductService) : ControllerBase
     {
         private readonly IProductService _ProductService = ProductService;
 
         [HttpGet("all")]
-        public async Task<IActionResult> GetPaginatedAllProducts([FromQuery] PaginationQuery query)
+        public async Task<IActionResult> GetPaginatedAllProducts([FromQuery] ProductsQuery query)
         {
             var Products = await _ProductService.GetPaginatedAllProducts(query);
             return Ok(Products);

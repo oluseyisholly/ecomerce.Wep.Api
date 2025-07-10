@@ -8,4 +8,13 @@ namespace EcommerceWebApi.Dto
 
         public int PageSize { get; set; } = 10; // default to 10 items per page
     }
+
+    public class BaseDto
+    {
+        public int Id { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public DateTime? UpdatedAt { get; set; }
+    }
 }

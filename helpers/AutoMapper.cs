@@ -28,6 +28,7 @@ namespace EcommerceWebApi.AutoMapper
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
 
             CreateMap<Category, CreateCategoryDto>();
+            CreateMap<Category, CategoryDto>();
 
             CreateMap<UpdateCategoryDto, Category>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
@@ -38,6 +39,7 @@ namespace EcommerceWebApi.AutoMapper
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
 
             CreateMap<Product, CreateProductDto>();
+
             CreateMap<Product, ProductDto>()
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category));
             ;

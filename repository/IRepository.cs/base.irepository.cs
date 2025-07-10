@@ -9,11 +9,13 @@ namespace EcommerceWebApi.IRepository
         Task<List<T>> GetAll();
         Task<PaginatedResponse<T>> GetPaginatedAll(
             PaginationQuery query,
+            Expression<Func<T, bool>>? filter,
             params Expression<Func<T, object>>[] includes
         );
         Task<T?> GetById(int id);
         Task<T> Create(T data);
         Task<T> Update(T data);
         Task<T> Delete(T data);
+        Task<T> SoftDelete(T data);
     }
 }

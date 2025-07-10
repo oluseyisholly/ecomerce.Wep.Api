@@ -43,17 +43,17 @@ namespace EcommerceWebApi.Service
         }
 
         public async Task<
-            StandardResponse<PaginatedResponse<CreateCategoryDto>>
+            StandardResponse<PaginatedResponse<CategoryDto>>
         > GetPaginatedAllCategories(PaginationQuery query)
         {
-            var Categories = await _CategoryRepository.GetPaginatedAll(query);
+            var Categories = await _CategoryRepository.GetPaginatedAll(query, null);
 
-            var mappedItems = _mapper.Map<List<CreateCategoryDto>>(Categories.Data);
+            var mappedItems = _mapper.Map<List<CategoryDto>>(Categories.Data);
 
-            return new StandardResponse<PaginatedResponse<CreateCategoryDto>>
+            return new StandardResponse<PaginatedResponse<CategoryDto>>
             {
                 Message = "success",
-                Data = new PaginatedResponse<CreateCategoryDto>(
+                Data = new PaginatedResponse<CategoryDto>(
                     mappedItems,
                     Categories.TotalRecords,
                     Categories.PageNumber,
@@ -71,7 +71,7 @@ namespace EcommerceWebApi.Service
                 throw new UnprocessibleEntityException("Category Does Not Exist");
             }
 
-            var result = await _CategoryRepository.Delete(existingCategory);
+            var result = await _CategoryRepository.SoftDelete(existingCategory);
 
             var Category = _mapper.Map<CreateCategoryDto>(result);
 

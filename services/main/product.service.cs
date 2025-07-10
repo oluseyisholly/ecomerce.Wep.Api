@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using AutoMapper;
 using EcommerceWebApi.Common.Model;
 using EcommerceWebApi.Dto;
@@ -43,10 +44,15 @@ namespace EcommerceWebApi.Service
         }
 
         public async Task<StandardResponse<PaginatedResponse<ProductDto>>> GetPaginatedAllProducts(
-            PaginationQuery query
+            ProductsQuery query
         )
         {
-            var Products = await _ProductRepository.GetPaginatedAll(query, p => p.Category);
+            var filter =
+                query.CategoryId != null
+                    ? (Expression<Func<Product, bool>>)(p => p.CategoryId == query.CategoryId)
+                    : null;
+
+            var Products = await _ProductRepository.GetPaginatedAll(query, filter, p => p.Category);
 
             var mappedItems = _mapper.Map<List<ProductDto>>(Products.Data);
 

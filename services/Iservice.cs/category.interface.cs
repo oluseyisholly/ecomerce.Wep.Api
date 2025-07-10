@@ -18,7 +18,7 @@ namespace EcommerceWebApi.IService
             UpdateCategoryDto createCategoryDto
         );
 
-        Task<StandardResponse<PaginatedResponse<CreateCategoryDto>>> GetPaginatedAllCategories(
+        Task<StandardResponse<PaginatedResponse<CategoryDto>>> GetPaginatedAllCategories(
             PaginationQuery query
         );
     }
