@@ -79,7 +79,7 @@ namespace EcommerceWebApi.Middleware
             Exception exception
         )
         {
-            var response = new { StatusCode = statusCode, Message = exception.Message };
+            var response = new { StatusCode = statusCode, exception.Message };
 
             context.Response.ContentType = contentType;
             context.Response.StatusCode = statusCode;

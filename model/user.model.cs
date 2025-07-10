@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using EcommerceWebApi.Common.Model;
 
 namespace EcommerceWebApi.Models
 {
@@ -12,6 +13,10 @@ namespace EcommerceWebApi.Models
         [Required]
         [MaxLength(50)]
         public string LastName { get; set; } = null!;
+
+        [Required]
+        [MaxLength(50)]
+        public RoleEnum Role { get; set; } = RoleEnum.User;
 
         [Required]
         [EmailAddress]

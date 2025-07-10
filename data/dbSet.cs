@@ -7,6 +7,7 @@ namespace EcommerceWebApi.Data
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         // Add more DbSets here as needed
         protected override void OnModelCreating(ModelBuilder modelBuilder)

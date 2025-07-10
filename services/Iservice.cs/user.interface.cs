@@ -7,10 +7,15 @@ namespace EcommerceWebApi.IService
 {
     public interface IUserService
     {
-        Task<StandardResponse<List<User>>> GetAllUsers();
-        User GetUsersById();
+        Task<StandardResponse<List<UserDto>>> GetAllUsers();
+        Task<StandardResponse<LoginResponseDto>> LoginUser(LoginUserDto loginUserDto);
+        Task<StandardResponse<User>> GetUsersById();
         Task<StandardResponse<CreateUserDto>> CreateUser(CreateUserDto createUserDto);
+        Task<StandardResponse<User>> DeleteUser(int Id);
+        Task<StandardResponse<UpdateUserDto>> UpdateUser(int Id, UpdateUserDto createUserDto);
 
-        Task<StandardResponse<PaginatedResponse<User>>> GetPaginatedAllUsers(PaginationQuery query);
+        Task<StandardResponse<PaginatedResponse<UserDto>>> GetPaginatedAllUsers(
+            PaginationQuery query
+        );
     }
 }

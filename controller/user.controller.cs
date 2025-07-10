@@ -1,3 +1,6 @@
+using System.Security.Claims;
+using System.Threading.Tasks;
+using EcommerceWebApi.Common.Attributes;
 using EcommerceWebApi.Common.Model;
 using EcommerceWebApi.Dto;
 using EcommerceWebApi.IService;
@@ -14,7 +17,6 @@ namespace EcommerceWebApi.Controllers
     {
         private readonly IUserService _userService = userService;
 
-        // GET: api/sample
         [HttpGet("all")]
         [AllowAnonymous]
         public async Task<IActionResult> GetPaginatedAllUsers([FromQuery] PaginationQuery query)
@@ -23,34 +25,34 @@ namespace EcommerceWebApi.Controllers
             return Ok(users);
         }
 
-        // GET: api/sample
-        [HttpGet("paginated")]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetAll()
-        {
-            var users = await _userService.GetAllUsers();
-            return Ok(users);
-        }
+        // [HttpGet("all")]
+        // [AllowAnonymous]
+        // public async Task<IActionResult> GetAll()
+        // {
+        //     var users = await _userService.GetAllUsers();
+        //     return Ok(users);
+        // }
 
-        // GET: api/sample
         [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult LogIn()
+        public async Task<IActionResult> LogIn([FromBody] LoginUserDto loginUserDto)
         {
-            var data = _userService.GetAllUsers();
+            var data = await _userService.LoginUser(loginUserDto);
             return Ok(data);
         }
 
-        // GET: api/sample/5
-        [HttpGet("{id}")]
-        [AllowAnonymous]
-        public IActionResult GetById(int id)
-        {
-            var item = new { Id = id, Name = $"Item {id}" };
-            return Ok(item);
-        }
+        // [HttpGet("{id}")]
+        // [AllowAnonymous]
 
-        // POST: api/sample
+        // public IActionResult GetById(
+        //     int id
+        // // [FromUserClaim(ClaimTypes.NameIdentifier)] string userId
+        // )
+        // {
+        //     var item = new { Id = id, Name = $"Item {id}" };
+        //     return Ok(item);
+        // }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserDto createUserDto)
@@ -58,7 +60,21 @@ namespace EcommerceWebApi.Controllers
             var data = await _userService.CreateUser(createUserDto);
             return Ok(data);
         }
-    }
 
-    // Sample Data Transfer Object (DTO)
+        [HttpDelete("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var data = await _userService.DeleteUser(id);
+            return Ok(data);
+        }
+
+        [HttpPut("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserDto updateUserDto)
+        {
+            var data = await _userService.UpdateUser(id, updateUserDto);
+            return Ok(data);
+        }
+    }
 }

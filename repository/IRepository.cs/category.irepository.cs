@@ -2,5 +2,5 @@ using EcommerceWebApi.Models;
 
 namespace EcommerceWebApi.IRepository
 {
-    public interface IProductRepository : IBaseRepository<Product> { }
+    public interface ICategoryRepository : IBaseRepository<Category> { }
 }

@@ -15,4 +15,11 @@ namespace EcommerceWebApi.Common.Model
         failed,
         Refunded,
     }
+
+    public enum RoleEnum
+    {
+        Admin,
+        User,
+        Guest,
+    }
 }
